@@ -1,4 +1,4 @@
-FROM	gliderlabs/alpine:3.5
+FROM	alpine:3.5
 
 MAINTAINER	Phillip "RootWyrm" Jaenke <talecaster@rootwyrm.com>
 
@@ -53,6 +53,8 @@ RUN mkdir -p /opt/talecaster/defaults ; \
 	mv /etc/apk/repositories /etc/apk/repositories.bak ; \
 	echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/main" >> /etc/apk/repositories ; \
 	echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories ; \
+	apk update ; \
+	apk upgrade ; \
 	apk add --no-cache $pkg_common ; \
 	ln -s /etc/sv/firstboot /etc/service/ ; \
 	ln -s /etc/service /service ; \
