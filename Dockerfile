@@ -1,6 +1,6 @@
-MAINTAINER	Phillip "RootWyrm" Jaenke <talecaster@rootwyrm.com>
-
 FROM	gliderlabs/alpine:latest
+
+MAINTAINER	Phillip "RootWyrm" Jaenke <talecaster@rootwyrm.com>
 
 ## Set up our labels
 ARG RW_BLDHASH
