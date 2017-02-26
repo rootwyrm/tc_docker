@@ -65,6 +65,9 @@ RUN mkdir -p /opt/talecaster/defaults ; \
 
 VOLUME [ "/run", "/config", "/shared", "/downloads" ]
 
+## Handle rebuilds in a nicer fashion. 
+ONBUILD RUN apk update ; apk upgrade
+
 ## To go to edge (rarely needed):
 # FROM gliderlabs/alpine:edge
 # http://dl-cdn.alpinelinux.org/alpine/edge/main
