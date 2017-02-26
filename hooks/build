@@ -13,10 +13,10 @@ docker build \
 	--build-arg LS_VCSREF=`git rev-parse --short HEAD` \
 	--build-arg LS_BLDDATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 	--build-arg LS_VENDOR="RootWyrm.com" \
-	--build-arg LS_SCHEMA=`grep LS_SCHEMA ./build.conf | cut -d = -f 2` \
-	--build-arg LS_SCHEMAVERSION=`grep LS_SCHEMAVERSION ./build.conf | cut -d = -f 2` \
-	--build-arg LS_NAME=`grep LS_NAME ./build.conf | cut -d = -f 2` \
-	--build-arg LS_URL=`grep LS_URL ./build.conf | cut -d = -f 2` \
+	--build-arg LS_SCHEMA=`grep LS_SCHEMA /hooks/build.conf | cut -d = -f 2` \
+	--build-arg LS_SCHEMAVERSION=`grep LS_SCHEMAVERSION /hooks/build.conf | cut -d = -f 2` \
+	--build-arg LS_NAME=`grep LS_NAME /hooks/build.conf | cut -d = -f 2` \
+	--build-arg LS_URL=`grep LS_URL /hooks/build.conf | cut -d = -f 2` \
 	-t $IMAGE_NAME .
 	
 ## NYI
