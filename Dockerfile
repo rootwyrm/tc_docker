@@ -1,4 +1,4 @@
-FROM	gliderlabs/alpine:latest
+FROM	gliderlabs/alpine:3.5
 
 MAINTAINER	Phillip "RootWyrm" Jaenke <talecaster@rootwyrm.com>
 
@@ -50,9 +50,9 @@ RUN mkdir -p /opt/talecaster/defaults ; \
 	mkdir -p /opt/talecaster/build ; \
 	mkdir -p /var/log/runit ; \
 	touch /firstboot ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories ; \
+	mv /etc/apk/repositories /etc/apk/repositories.bak ; \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/main" >> /etc/apk/repositories ; \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories ; \
 	apk add --no-cache $pkg_common ; \
 	ln -s /etc/sv/firstboot /etc/service/ ; \
 	ln -s /etc/service /service ; \
@@ -63,3 +63,8 @@ RUN mkdir -p /opt/talecaster/defaults ; \
 
 VOLUME [ "/run", "/config", "/shared", "/downloads" ]
 
+## To go to edge (rarely needed):
+# FROM gliderlabs/alpine:edge
+# http://dl-cdn.alpinelinux.org/alpine/edge/main
+# http://dl-cdn.alpinelinux.org/alpine/edge/community
+# http://dl-cdn.alpinelinux.org/alpine/edge/testing
