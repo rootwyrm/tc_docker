@@ -3,6 +3,11 @@
 # Using the pre-build to edit the Dockerfile so we can cut down our 
 # layer count.
 
+touch testfile
+echo "Banana Pear Apple" >> testfile
+echo "Apple Pear Banana" 
+cat testfile
+
 sed -i -e 's/\$RW_VCSHASH/'$(git rev-parse HEAD)'/' Dockerfile
 sed -i -e 's/\$RW_VCSBRANCH/'$(git rev-parse --abbrev-ref HEAD)'/' Dockerfile
 sed -i -e 's/\$RW_BLDHASH/'$(date | sha256sum | awk '{print $1}')'/' Dockerfile
