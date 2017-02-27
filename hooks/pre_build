@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Using the pre-build to edit the Dockerfile so we can cut down our 
+# layer count.
+
+sed -i -e 's/\$RW_VCSHASH/'$(git rev-parse HEAD)'/' ../Dockerfile
+sed -i -e 's/\$RW_VCSBRANCH/'$(git rev-parse --abbrev-ref HEAD)'/' ../Dockerfile
+sed -i -e 's/\$RW_BLDHASH/'$(date | sha256sum | awk '{print $1}')'/' ../Dockerfile
+sed -i -e 's/\$LS_VCSREF/'$(git rev-parse --short HEAD)'/' ../Dockerfile
+sed -i -e 's/\$LS_SCHEMAVERSION/1.0.0-rc.1/' ../Dockerfile
