@@ -25,6 +25,7 @@ plug_variable_dockerfile()
 	sed -i -e 's/\$'$1'/'$2'/' Dockerfile
 }
 
+build_variables
 for v in `cat ./build/pre_build.run`; do
 	plug_variable_dockerfile $(echo $v | cut -d = -f 1) $(echo $v | cut -d = -f 2)
 done
