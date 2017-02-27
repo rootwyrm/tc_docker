@@ -7,6 +7,7 @@ touch testfile
 echo "Banana Pear Apple" >> testfile
 echo "Apple Pear Banana" 
 cat testfile
+ls -lR .
 
 sed -i -e 's/\$RW_VCSHASH/'$(git rev-parse HEAD)'/' Dockerfile
 sed -i -e 's/\$RW_VCSBRANCH/'$(git rev-parse --abbrev-ref HEAD)'/' Dockerfile
