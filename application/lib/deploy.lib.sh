@@ -11,6 +11,20 @@ export chkfile="/firstboot"
 export basedir="/opt/talecaster/defaults"
 export svcdir="/etc/service"
 
+check_error()
+{
+	if [ $1 -ne 0 ]; then
+		RC=$1
+		if [ -z $2 ]; then
+			echo "[FATAL] Error occurred in unknown location"
+			exit $RC
+		else
+			echo "[FATAL] Error occurred in $2 : $1"
+			exit $RC
+		fi
+	fi
+}
+
 ## Trap early
 test_deploy()
 {
