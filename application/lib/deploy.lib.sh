@@ -194,7 +194,11 @@ deploy_application_git()
 				rm -rf $app_destdir
 				mkdir $app_destdir
 			fi
-			git clone $app_git_url -b $branch --depth=1 $app_destdir
+			if [ -z $branch ]; then
+				git clone $app_git_url -b master --depth=1 $app_destdir
+			else
+				git clone $app_git_url -b $branch --depth=1 $app_destdir
+			fi
 			check_error $? git_clone
 			chown -R $tcuid:$tcgid $app_destdir
 			return $?
