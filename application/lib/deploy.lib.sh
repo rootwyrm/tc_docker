@@ -254,7 +254,7 @@ ssl_ssc_create()
 	sed -i -e 's,_DOMAIN_,'$mydomain',' $OPENSSLCONFIG
 
 	## Generate the key
-	openssl genrsa -des3 -out $ssldir/media.key -passout env:sslpass 2048
+	openssl genrsa -des3 -out $ssldir/$app_name.key -passout env:sslpass 2048
 	check_error $? ssl_gen_key
 
 	## Gen CSR
