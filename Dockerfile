@@ -1,4 +1,4 @@
-FROM	alpine:3.5
+FROM	alpine:edge
 
 MAINTAINER	Phillip "RootWyrm" Jaenke <talecaster@rootwyrm.com>
 
@@ -32,6 +32,7 @@ LABEL	com.rootwyrm.product="TaleCaster" \
 		com.rootwyrm.talecaster.ports_udp="" \
 		com.rootwyrm.talecaster.synology="0" \
 		com.rootwyrm.talecaster.qnap="0" \
+		com.rootwyrm.talecaster.vpn="1" \
 
 		org.label-schema.schema-version="$LS_SCHEMAVERSION" \
 		org.label-schema.vendor="$LS_VENDOR" \
@@ -41,7 +42,7 @@ LABEL	com.rootwyrm.product="TaleCaster" \
 		org.label-schema.version="$RW_BLDHASH" \
 		org.label-schema.build-date="$LS_BLDDATE"
 
-ENV pkg_common="runit file dcron apk-cron openssl bash"
+ENV pkg_common="runit file dcron apk-cron openssl bash openvpn"
 
 ## Create common elements
 COPY [ "application/", "/opt/talecaster" ]
@@ -51,8 +52,8 @@ RUN mkdir -p /opt/talecaster/defaults ; \
 	mkdir -p /var/log/runit ; \
 	touch /firstboot ; \
 	mv /etc/apk/repositories /etc/apk/repositories.bak ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/main" >> /etc/apk/repositories ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories ; \
+	echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories ; \
+	echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories ; \
 	apk update ; \
 	apk upgrade ; \
 	apk add --no-cache $pkg_common ; \
@@ -61,15 +62,21 @@ RUN mkdir -p /opt/talecaster/defaults ; \
 	sed -i -e '/^tty*/d' /etc/inittab ; \
 	sed -i -e '/^# Set up*/d' /etc/inittab ; \
 	sed -i -e '/^::ctrlalt*/d' /etc/inittab ; \
-	sed -i -e '/.*salute$/d' /etc/inittab
+	sed -i -e '/.*salute$/d' /etc/inittab ; \
+	rm -rf /etc/init.d
 
-VOLUME [ "/run", "/config", "/shared", "/downloads" ]
+VOLUME [ "/run", "/config/openvpn", "/shared", "/downloads" ]
 
 ## Handle rebuilds in a nicer fashion. 
 ONBUILD RUN apk update ; apk upgrade
 
 ## To go to edge (rarely needed):
-# FROM gliderlabs/alpine:edge
+# FROM alpine:edge
 # http://dl-cdn.alpinelinux.org/alpine/edge/main
 # http://dl-cdn.alpinelinux.org/alpine/edge/community
 # http://dl-cdn.alpinelinux.org/alpine/edge/testing
+# FROM alpine:3.5
+# http://dl-cdn.alpinelinux.org/alpine/v3.5/main
+# http://dl-cdn.alpinelinux.org/alpine/v3.5/community
+# http://dl-cdn.alpinelinux.org/alpine/v3.5/testing
+
