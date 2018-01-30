@@ -1,4 +1,4 @@
-FROM	alpine:edge
+FROM	alpine:3.7
 
 MAINTAINER	Phillip "RootWyrm" Jaenke <talecaster@rootwyrm.com>
 
@@ -52,8 +52,8 @@ RUN mkdir -p /opt/talecaster/defaults ; \
 	mkdir -p /var/log/runit ; \
 	touch /firstboot ; \
 	mv /etc/apk/repositories /etc/apk/repositories.bak ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories ; \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/main" >> /etc/apk/repositories ; \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories ; \
 	apk update ; \
 	apk upgrade ; \
 	apk add --no-cache $pkg_common ; \
@@ -75,7 +75,7 @@ ONBUILD RUN apk update ; apk upgrade
 # http://dl-cdn.alpinelinux.org/alpine/edge/main
 # http://dl-cdn.alpinelinux.org/alpine/edge/community
 # http://dl-cdn.alpinelinux.org/alpine/edge/testing
-# FROM alpine:3.5
+# FROM alpine:3.x
 # http://dl-cdn.alpinelinux.org/alpine/v3.5/main
 # http://dl-cdn.alpinelinux.org/alpine/v3.5/community
 # http://dl-cdn.alpinelinux.org/alpine/v3.5/testing
