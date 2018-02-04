@@ -42,7 +42,7 @@ LABEL	com.rootwyrm.product="TaleCaster" \
 		org.label-schema.version="$RW_BLDHASH" \
 		org.label-schema.build-date="$LS_BLDDATE"
 
-ENV pkg_common "runit file dcron apk-cron openssl bash openvpn"
+ARG pkg_common="runit file dcron apk-cron openssl bash openvpn"
 
 ## Create common elements
 COPY [ "application/", "/opt/talecaster" ]
