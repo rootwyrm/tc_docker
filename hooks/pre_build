@@ -12,10 +12,29 @@
 build_variables()
 {
 	touch ./build/pre_build.run
-	printf 'GIT_REV = %s\n' "$(git rev-parse HEAD)" >> ./build/pre_build.run
-	printf 'GIT_REV_SHORT = %s\n' "$(git rev-parse --short HEAD)" >> ./build/pre_build.run
-	printf 'GIT_BRANCH = %s\n' "$(git rev-parse --short HEAD)" >> ./build/pre_build.run
-	printf 'DATE_HASH = %s\n' "$(date +%d%m%y-%H%MZ | sha256sum | awk '{print $1}')" >> ./build/pre_build.run
+	if [ $? -ne 0 ]; then
+		echo "[FATAL] could not create ./build/pre_build.run"
+		exit 1
+	fi
+	
+	RUNFILE="./build/pre_build.run"
+
+	GIT_REV=$(git rev-parse HEAD)
+	GIT_REV_SHORT=$(git rev-parse --short HEAD)
+	GIT_REV_HASH=$(git rev-parse HEAD | sha256sum | awk '{print $1}')
+	DATE_FANCY=$(date)
+	DATE_HASH=$(date +%d%m%y-%H%MZ | sha256sum | awk '{print $1}')
+
+	printf 'LS_SCHEMAVERSION = %s\n' "1.0"
+	printf 'LS_VENDOR = %s\n' "TaleCaster" >> $RUNFILE
+	printf 'LS_NAME = %s\n' "TaleCaster_base" >> $RUNFILE
+	printf 'LS_URL = %s\n' "https://github.com/rootwyrm/talecaster" >> $RUNFILE
+	printf 'LS_BLDDATE = %s\n' $FANCY_DATE >> $RUNFILE
+	printf 'VCS_REF = %s\n' $GIT_REV_SHORT >> $RUNFILE
+	printf 'RW_VCSHASH = %s\n' $GIT_REV_HASH >> $RUNFILE
+	printf 'RW_BLDHASH = %s\n' $GIT_REV_HASH >> $RUNFILE
+	printf 'LS_BLDDATE = %s\n' $DATE_HASH >> $RUNFILE
+
 	# get releaseid from /application/id.release
 	# get servicename from /application/id.service
 }
