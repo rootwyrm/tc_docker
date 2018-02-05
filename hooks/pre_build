@@ -29,7 +29,7 @@ build_variables()
 	printf 'LS_VENDOR = %s\n' "TaleCaster" >> $RUNFILE
 	printf 'LS_NAME = %s\n' "TaleCaster_base" >> $RUNFILE
 	printf 'LS_URL = %s\n' "https://github.com/rootwyrm/talecaster" >> $RUNFILE
-	printf 'LS_BLDDATE = %s\n' $FANCY_DATE >> $RUNFILE
+	printf 'LS_BLDDATE = %s\n' $DATE_FANCY >> $RUNFILE
 	printf 'VCS_REF = %s\n' $GIT_REV_SHORT >> $RUNFILE
 	printf 'RW_VCSHASH = %s\n' $GIT_REV_HASH >> $RUNFILE
 	printf 'RW_BLDHASH = %s\n' $GIT_REV_HASH >> $RUNFILE
