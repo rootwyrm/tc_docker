@@ -47,22 +47,22 @@ ARG pkg_common="runit file dcron apk-cron openssl bash openvpn"
 ## Create common elements
 COPY [ "application/", "/opt/talecaster" ]
 COPY [ "sv/", "/etc/sv" ]
-RUN mkdir -p /opt/talecaster/defaults ; \
-	mkdir -p /opt/talecaster/build ; \
-	mkdir -p /var/log/runit ; \
+RUN mkdir -p /opt/talecaster/defaults && \
+	mkdir -p /opt/talecaster/build && \
+	mkdir -p /var/log/runit && \
 	touch /firstboot ; \
-	mv /etc/apk/repositories /etc/apk/repositories.bak ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/main" >> /etc/apk/repositories ; \
-	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories ; \
-	apk update ; \
-	apk upgrade ; \
-	/bin/sh apk add --no-cache $pkg_common ; \
-	ln -s /etc/sv/firstboot /etc/service/ ; \
-	ln -s /etc/service /service ; \
-	sed -i -e '/^tty*/d' /etc/inittab ; \
-	sed -i -e '/^# Set up*/d' /etc/inittab ; \
-	sed -i -e '/^::ctrlalt*/d' /etc/inittab ; \
-	sed -i -e '/.*salute$/d' /etc/inittab ; \
+	mv /etc/apk/repositories /etc/apk/repositories.bak && \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/main" >> /etc/apk/repositories && \
+	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories && \
+	apk update && \
+	apk upgrade && \
+	apk add --no-cache $pkg_common && \
+	ln -s /etc/sv/firstboot /etc/service/ && \
+	ln -s /etc/service /service && \
+	sed -i -e '/^tty*/d' /etc/inittab && \
+	sed -i -e '/^# Set up*/d' /etc/inittab && \
+	sed -i -e '/^::ctrlalt*/d' /etc/inittab && \
+	sed -i -e '/.*salute$/d' /etc/inittab && \
 	rm -rf /etc/init.d
 
 VOLUME [ "/run", "/config/openvpn", "/shared", "/downloads" ]
