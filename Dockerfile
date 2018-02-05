@@ -56,7 +56,7 @@ RUN mkdir -p /opt/talecaster/defaults && \
 	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories && \
 	apk update && \
 	apk upgrade && \
-	export pkg_common"runit file dcron apk-cron openssl bash openvpn" && \
+	export pkg_common="runit file dcron apk-cron openssl bash openvpn" && \
 	apk add --no-cache $pkg_common && \
 	ln -s /etc/sv/firstboot /etc/service/ && \
 	ln -s /etc/service /service && \
