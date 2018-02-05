@@ -42,7 +42,7 @@ LABEL	com.rootwyrm.product="TaleCaster" \
 		org.label-schema.version="$RW_BLDHASH" \
 		org.label-schema.build-date="$LS_BLDDATE"
 
-ARG pkg_common="runit file dcron apk-cron openssl bash openvpn"
+ENV pkg_common="runit file dcron apk-cron openssl bash openvpn"
 
 ## Create common elements
 COPY [ "application/", "/opt/talecaster" ]
@@ -56,6 +56,7 @@ RUN mkdir -p /opt/talecaster/defaults && \
 	echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories && \
 	apk update && \
 	apk upgrade && \
+	export pkg_common"runit file dcron apk-cron openssl bash openvpn" && \
 	apk add --no-cache $pkg_common && \
 	ln -s /etc/sv/firstboot /etc/service/ && \
 	ln -s /etc/service /service && \
