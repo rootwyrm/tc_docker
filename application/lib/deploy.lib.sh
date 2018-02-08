@@ -11,7 +11,7 @@ export chkfile="/firstboot"
 export basedir="/opt/talecaster/defaults"
 export svcdir="/etc/service"
 
-check_error()
+CHECK_ERROR()
 {
 	if [ $1 -ne 0 ]; then
 		RC=$1
@@ -86,7 +86,7 @@ deploy_talecaster_user()
 			if [ $? -ne 0 ]; then
 				export tcgid="60000"
 				addgroup -g $tcgid $tcgroup
-				check_error $? addgroup
+				CHECK_ERROR $? addgroup
 			else
 				grep $tcgroup /etc/group | cut -d : -f 3 > /tmp/gid
 				export tcgid=$(cat /tmp/gid)
@@ -114,7 +114,7 @@ deploy_talecaster_user()
 
 	## NOTE: Do not use backtick; known defect in handling.
 	adduser -h /home/$tcuser -g "TaleCaster User" -u $tcuid -G $tcgroup -D -s $tcshell $tcuser
-	check_error $? adduser
+	CHECK_ERROR $? adduser
 
 	## Clean up after ourselves
 	if [ -f /tmp/gid ]; then
@@ -132,10 +132,10 @@ deploy_tcuser_ownership()
 	fi
 
 	chown -R $tcuid:$tcgid /home/$tcuser
-	check_error $? chown_home
+	CHECK_ERROR $? chown_home
 	chmod 0700 /home/$tcuser
 	chown -R $tcuid:$tcgid /config
-	check_error $? chown_config
+	CHECK_ERROR $? chown_config
 
 	if [ ! -d $app_destdir ] ; then
 		chown -R $tcuid:$tcgid $app_destdir
@@ -199,7 +199,7 @@ deploy_application_git()
 			else
 				git clone $app_git_url -b $branch --depth=1 $app_destdir
 			fi
-			check_error $? git_clone
+			CHECK_ERROR $? git_clone
 			chown -R $tcuid:$tcgid $app_destdir
 			return $?
 			;;
@@ -255,13 +255,13 @@ ssl_ssc_create()
 
 	## Generate the key
 	openssl genrsa -des3 -out $ssldir/$app_name.key -passout env:sslpass 2048
-	check_error $? ssl_gen_key
+	CHECK_ERROR $? ssl_gen_key
 
 	## Gen CSR
 	openssl req -new -x509 -days 3650 -batch -nodes \
 		-config $OPENSSLCONFIG -key $ssldir/"$app_name".key \
 		-out $ssldir/"$app_name".crt -passin env:sslpass
-	check_error $? ssl_gen_csr
+	CHECK_ERROR $? ssl_gen_csr
 
 	mv $ssldir/"$app_name".key $ssldir/"$app_name".key.lock
 	echo $sslpass > $ssldir/"$app_name".key.lock.string
@@ -269,7 +269,7 @@ ssl_ssc_create()
 
 	## Unlock the key
 	openssl rsa -in $ssldir/"$app_name".key.lock -out $ssldir/"$app_name".key -passin env:sslpass
-	check_error $? ssl_unlock_key
+	CHECK_ERROR $? ssl_unlock_key
 
 	for sslfile in `ls $ssldir/"$app_name"*`; do
 		chown $tcuid:$tcgid $sslfile
@@ -290,11 +290,11 @@ ssl_certificate_print()
 
 		## Print information
 		echo "[SSL] Certificate Issuer: $crtissuer"
-		check_error $? ssl_print_issuer
+		CHECK_ERROR $? ssl_print_issuer
 		echo "[SSL] Certificate Hostnames: $crtdns"
-		check_error $? ssl_print_hostname
+		CHECK_ERROR $? ssl_print_hostname
 		echo "[SSL] Certificate Fingerprint: $certfp"
-		check_error $? ssl_print_fingerprint
+		CHECK_ERROR $? ssl_print_fingerprint
 	elif [ ! -z $NOSSL ]; then
 		echo "[APPLICATION] Ignoring SSL - no application support."
 	else
